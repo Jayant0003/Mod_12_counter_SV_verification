@@ -1,0 +1,113 @@
+All the digital circuit which we design will be finally implementd in IC using CMOS technology
+-> where exactly in ASIC Design FLow, CMOS technology will be used? -----
+	. Physical Layout
+	. Design Rule Check
+	. Layout vs Schematic
+-> What are the advatages of CMOS technology compared to other technology?-----
+-> How CMOS is fabricated?----
+-> What are the characteristics of CMOS Circuit?---
+-> How to implement functions using CMOS Circuit?---
+-> What are the different steps invloved before going for fabrication?---
+
+COURSE AGENDA
+-> History
+	. Invention of tansistor(BJT) by Bell Laboratory in 1947 by Shockley,Brattain,Bardeen
+	. First transistor IC in 1958 by Jack Kilby and that was an oscilloscope
+	. Invention of CMOS logic gates 1963 by Wanlass & Sah- Fairchild semiconductor
+	. First microprocessor(Intel 4004) 1970...2,300 MOS transistors,740 KHz clock frequency
+	. VLSI in 1978(chips with >20,000 transistors)
+	. ULSI 
+	. SOC in 2002(20-30 million transistors)
+	why VLSI
+		. Before VLSI there are discrete circuits..we need to have components(capacitrs,resistors etc) seperately and connect all using wires
+			it requires more area,wires increase propagation delay and power dissipation
+			. In IC all the registors and capacitors are implemented using transistors and we don't require much wire etc
+				. Higher speed, Lower power dissipation,Pysically smaller,low cost(almost no manual assembly)
+	Application of VLSI	
+		.Processors(CPU,DSP,Controllers)
+		.Memory Chips(RAM,ROM,EEPROM)
+		.Analog(Mobile communication,Audio/Video processing)
+		.Programmable(PLA,FPGA)
+		.Embedded systems(used in cars,factories,network cards)
+	Gordon Moore:- Co_founder of Intel(predicted no of transistors per chip would grow exponentially(double every 18 months)
+		Processor    Transistor_count   year    company		technology(channel length) 	area
+		4004		2300				1971	Intel		10um(micor meter)			12mm2
+		8008		3500				1972	Intel		10um						14mm2
+		6800		4100				1974	Motorola	6um							16mm2
+		8085		6500				1976	INtel		3um							20
+		Pentium		31 Lakhs			1993	Intel		0.8um						294mm2
+		K7			220 Lakhs			1999	AMD			0.25um						184mm2
+		Core i7		11.7 Crore			2010	Intel		32nm						240mm2
+		Centriq 2400	18k Crore		2017	Qualcomm	10nm						398mm2
+. BJT vs FET
+							Transistors
+			1. BJT(Bipolar) 			2.FET(unipolar)
+		. PNP			. NPN		. JFET						. MOSFET		 		.MESFET
+								.N_channel .P_channel 	.PMOS .NMOS .CMOS .BiCMOS
+								
+	BJT:- a current controlled valve(current(base current IB) controlls collector current(IC)
+	FET:- a voltage controlled value(voltage(gate-source Vgs) controlls the drain current(ID)
+			BJT																FET
+	. Bipolar(current is due to both majority and minority carriers) .Unipolar(current due to only majority carriers)
+	. Current controlled device										. Voltage controlled device
+	. Three terminals(Emitter,Base,Collector)						.Three terminals(Source,Gate,Drain)
+	. Types: NPN,PNP												. types: PMOS,NMOS,CMOS,BiCMOS
+	. switching speed is low and switching loss is more				. reverse
+	. Low input Impedence and package density						. "
+	. BJTs are preferred for low current applications				. high impedence caz of depletion region between gate and substrate
+	. Hig gain
+	
+-> JFET(Junction Field Effect Transistor)	
+-> MOSFET
+. CMOS Fabrication
+-> CMOS Characteristics
+	. Drive large fan-out(no of output devices can be connected to output terminal)
+	. High noise margin
+	. Logic levels independent of device sizes
+	. Always a path to Vdd or GND in steady state
+	. low output impedance that why large fan_out
+	. Less sensitive to noise
+	. Exremely high input resistance(caz of oxide layer)..that's why it rejects noise
+	. No direct path steady-state between power and ground
+. CMOS Circuit Design
+. CMOS Transistor Sizing
+. Layout and Stick Diagram
+. Non_Ideal Characteristics
+. ASIC Design FLow
+
+
+
+ASIC DESIGN FLow
+Front end
+. Specification
+. Architecture
+. Behavioural Model
+. RTL Coding
+. Verification
+. Synthesis
+. Gate Level Simulation
+. DFT Insertion
+Back end
+. Floor Planning
+. Placement
+. Clock Tree Synthesis
+. Routing
+. Static Timeing Analysis
+. Physical Layout
+. Design Rule Check
+. Layout vs Schematic
+GDSII to Foundry
+
+
+CMOS: complementary Metal OXide Semiconductor
+	. NMOS
+	. PMOS(p_type metal oxide semiconductor) Transistors
+Vth : minimum voltage that must be applied to the gate terminal to induce a conduction channel.
+-> NMOS(negatively doped for SRC and DRAIN regions) Transistor(Vth is positive)
+	. conductor when applying Vdd to its gate
+	. insulatory(gives better strong 0) when low is appied to its gate...that's why it's source terminal is connectd to GND
+-> PMOS Transistor(Vth is negative..PMOS is turned on by applying a negative gate-source vlotage(when a more negative voltage is applied to the gate terminal ralive to the source))....bubble in symbol
+	. conductor(gives better strong 1) when LOW is applied to its gate...that's why it's source terminal is connectd to VDD
+	. insuator when Vdd is appied
+	
+-> CMOS inverter

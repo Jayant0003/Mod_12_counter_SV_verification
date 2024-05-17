@@ -1,0 +1,135 @@
+-> why & what is timing analysis
+	. timing is one among 3 importand desing contraint of a chip(power,speed and area)
+	. How fast can i run the design(frequenc of operation 2.26GHz etc)?
+	. Does the design meet a given timing requirement?...it is timing analysis...crucial as whether to go ahead with the design or any modification is required 
+-> types of timing analysis
+	. Dynamic timing analysis--(to verify design in worst case scenario)verifies timing in the functional context by applying stimulus(extension of functional verification)
+		. Advantages
+			. can be very accurate(if simulation at spice level)
+			. simulator are available easily to calculates the logic values and delays 
+		. Disadvantages
+			. vector creation takes too long....slow(to 32 bit..2**32 combinations)
+			. incomplete timing coverage
+			. Analysis quality depends on stimulus vectors
+			. Requires more memory and CPU resources over STA
+	. Static timing analysis--(carries out in input independent manner)verifies timing in each path of logic circuit without applying circuits(ensure all paths in logic circuits are free to timing violations)
+		. STA is capable of verifying every path(i/p to o/p)
+		. main goal of STA is to verify, if all signals will arrive neither too early nor too late(at proper time) and hence proper circuit operation can be assured
+		. Advantages
+			. Much faster that timing-driven,gate level simulation(DTA)
+			. Exhaustive/complete timing coverage
+			. does not require input vectors
+			. More effiecient that DTA in memory and CPU Resources
+			. Capacity for millions of gates
+		. Limitations
+			. Works best with synchronous logic
+			. Complex to learn
+			. Must defien timing constraints/exceptions
+			. Difficulty in handling:
+				. Multiple clocks
+				. False paths(doesn't affect output)
+				. Multicycle paths
+		
+-> false paths & multi-cycle paths
+	. identify multiple paths and calculate corresponding propagation delay (longest path delay might not be the propagation delay of the circuit caz the path may be false path
+		(input might not follow that path---this false path doesn't affect output))
+		. Propagation delay of circuit: minimum amount of duraiton for which we need to wait for ouput after application of input
+	. Controlling and non_controlling values(0 is contolling value of AND and NAND(no dependency of 2nd input), 1 is for OR or NOR )
+	. Identify longes path and check if it is critical or false path..if it is false path and identify next longest path and check
+	. Multicycle path(which requires >1 clock cycle to propagate)
+	. False paths	
+		. paths that are not logic/functional paths(paths that may not be excited)
+		. cicuit delay=time of last output change(after application of input) not the longest path delay
+	
+-> STA in Design  Flow
+	. after synthesis(getting netlist) and Routing
+		. Primetime- synopsys(gate-level)
+		. PathMill-Epic(Synopsys--transistor_level)
+	. Inputs and outputs of STA Tools(does timing analysis and generate report..how many paths are verified and is ther any violation of the costraints)
+		. Inputs-gate_level netlist or routed netlist and thes inputs has to be described in cicuit architecture(in terms of gates or switches)
+		. provide delay information(SDF(standard Delay Format) file(of all gates and FF in input) & Model Lib or Net Delay & SPEf)
+		. Constraints(at what frequency this circuit shoud operate)
+-> Clock
+	. a periodic synchronization signal used as a time reference for data transfers in synchronous digital systems
+	. SLEW:- amount of time it takes for a single transition to occur(0-1,1-0)
+		. accounts for uncertainity in Rise and fall times of the signal
+		. slew rate is measure in volts/sec(dv/dt)...ideally in 0 time transitino occurs measn slew rate is infinite(impossible)
+	. Types of Clock
+		. Gated Clock(clock is not provided directly.. )
+			. reduces power consumption by swithcing off the clock to FF when the value of those FF doesn't change(clock will not go to unnecessary FF)
+			. mainly used in Low Power Applications
+		. Virtual Clock
+			. has no sources(no physical existence). Not connected to any port or pin withing current design
+			. Mainly used to model the I/O timinig specification
+			. serves as a reference for input or output delays
+		. Generated(Derived) clock
+			. a desing might include clock dividers or other structures that produce a new clock from a master source clock
+	. Clock Domain
+		. single clock domain(different block in circuit operate at same clock ferequency...easy to establish communication)
+		. multi clock domain(different blocks operate at different clock frequency..difficult to establish communication between them)
+			. how to establish communication?...how to synchronize clock domain
+				. any two system are considered asynchronous to each other when	
+					. they operate at two different frequency
+					. they operate at same frequency but at two different clock phase angles(phase difference)
+				. Two common methods for synchronizing data betwen clock domains are:
+					. use handshake signals(req and grant) to pass data between clock domains 
+					. use async_fifos(between 2 system) to store data one clock domain and to retrive data using another clock domain
+	
+	. CLock variations(Uncertainity)..ideally it should be a perfect square wave but practically it has many disturbances
+		. Latency
+			. clock source latency: time it takes for a clock signal to propagate from its actual ideal waveform origin point to the clock definition point(entry ) in the design
+			. Clock network latency: time it takes for a clock signal to propagate from the clock definition point to a register clock pint(any FF ect)
+		. Skew (permanent):- diffence between arrival times of the clock at different devices (of one FF is close to clock source and other FF is farther away from 
+					clcok source due to combinational dealy due to complex distrubuition network(has larger delay))
+			. Positive Skew(clock will delayed...data flow and clock flow direction are same to each other)
+				. if data flow is from FF1 -> FF2 -> FF3 and clock arrives first at FF1 then at FF2 then at FF3
+					then skew will be positive amon clock1 and clock2 and clock2
+			. Negative skew(clock will be advanced..data flow and clock flow direction are opposite to each other)
+				. if data flow is FF1 -> FF2 -> FF3 and clock arrives first at FF3 then FF2 then FF1
+					then skew will be negative among clock1 , clock2 and clock3
+			. Strategies to minimize clock skew(due to diffence in distribution newtork among blocks)
+				. make sure distribution path among all blocks are equal
+		. Jitter(temperory..when temperature comes at room temperature it vanishes): frquency variation in clock source(clock signals are generated by vibrators or crystal oscillators and 
+					these are semiconductors which is sensitive to temperature and power supply noise)
+			. diffence between actual clock period and ideal clock period(output frequency will not be desired)
+-> Timing parameters in STA
+	. Arrival time
+	. requirded time(expected arrival time)
+	. slack(difference b/w required and arrival time(output arrival time=input arrival time + delays):- used to identify critical path
+		. -slack :- constraints/expectations have not been methods(expected arrival time-actual arrival time)
+		. +slack: expectations have been met
+	. any logical path in design that violates the timing constraints(path with -slack)...slak 
+	
+	. Delays in Combinational circuits	(Tpd>Tcontamination)
+	. Delays in Sequenctial circtuis(setupt and hold time , Tclk-q,Tr2q,Ts2q)
+	
+	. if +skew(setupt time expression)
+		Tclk + Tskew >= Tclk-q(max) + Tgate_pd(max) + Tsetup(ff)
+	. if +sket(hold time expression)
+		Tclk-q(min) + Tgate_pd(min) >= Thold + Tskew
+	. External setup expression	
+		Tsetup(ext) >= Tpd(d_in) - Tpd(clk) + Tsetup(int)
+	. External hold time expression
+		Thold(ext) >= Tpd(clk) + Thold(int) - Tpd(d_in)
+-> STA procedures
+	. Break the desing into sets of timing paths
+		Types of timing path(for seq circuit)
+			. Primary input to register path(FF)
+			. Register to Primary output path
+			. Register to register path
+			. Primary input to primary output(pure comb path)
+	. Calculate the delay of each path
+	. Check all path delays to see if the given timing constraints are met
+	
+-> Timing examples and solution
+-> Methods to improve timing
+	. chip is requiered to work at 3GHz but it is working in desing at 2.5GHz
+	. How to improve timing
+		. Pipelining(adding D-FF in b/w the largest path and retiming(changing position of register in bw comb blocks))...speed gets increased
+			Advantages
+				. Higher throughput(no of output per second..speed) than comb system
+				. different parts of circuit will work with combination of input(helps in debugging)
+			Disadvantages
+				. Each FF will increase 1 clock cycle latency
+				. More silicon area and more power consumption(addition of register)
+		. Time borrowing(addition of low level latch instead of register)
